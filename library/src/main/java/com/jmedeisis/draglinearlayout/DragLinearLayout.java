@@ -524,11 +524,8 @@ public class DragLinearLayout extends LinearLayout {
         super.dispatchDraw(canvas);
 
         if(draggedItem.valid){
-            final int paddingLeft = getPaddingLeft();
-            final int paddingTop = getPaddingTop();
-
             canvas.save();
-            canvas.translate(paddingLeft, paddingTop + draggedItem.totalDragOffset);
+            canvas.translate(0, draggedItem.totalDragOffset);
             draggedItem.viewDrawable.draw(canvas);
 
             final int left = draggedItem.viewDrawable.getBounds().left;
