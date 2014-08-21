@@ -160,8 +160,14 @@ public class DragLinearLayout extends LinearLayout {
     /*private int placeholderViewResId;
     private View placeholderView;*/
 
+    public DragLinearLayout(Context context){
+        this(context, null);
+    }
+
     public DragLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        setOrientation(LinearLayout.VERTICAL);
 
         draggableChildren = new SparseArray<DraggableChild>();
 
@@ -190,6 +196,15 @@ public class DragLinearLayout extends LinearLayout {
         }*/
 
         nominalDistanceScaled = (int)(NOMINAL_DISTANCE * resources.getDisplayMetrics().density + 0.5f);
+    }
+
+    @Override
+    public void setOrientation(int orientation){
+        // enforce VERTICAL orientation; remove if HORIZONTAL support is ever added
+        if(LinearLayout.HORIZONTAL == orientation){
+            throw new IllegalArgumentException("DragLinearLayout must be VERTICAL.");
+        }
+        super.setOrientation(orientation);
     }
 
     /** Calls {@link #addView(android.view.View)} followed by {@link #setViewDraggable(android.view.View, android.view.View)}. */
