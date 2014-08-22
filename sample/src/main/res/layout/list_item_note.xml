@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
+    android:paddingTop="@dimen/half_default_vertical_margin"
+    android:paddingBottom="@dimen/half_default_vertical_margin"
     android:orientation="horizontal"
     android:focusableInTouchMode="true" >
 
@@ -34,6 +36,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:paddingTop="@dimen/quarter_default_vertical_margin"
         android:hint="@string/note_add_prompt"
         android:saveEnabled="false"
         android:inputType="text|textNoSuggestions|textMultiLine"

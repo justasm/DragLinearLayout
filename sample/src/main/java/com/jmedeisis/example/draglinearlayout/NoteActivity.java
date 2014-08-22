@@ -207,9 +207,9 @@ public class NoteActivity extends ActionBarActivity {
     }
 
     /*
-	 * IME fiddling
-	 * ---------------------------------------------------------------------------------------------
-	 */
+     * IME fiddling
+     * ---------------------------------------------------------------------------------------------
+     */
     private Runnable toggleImeRunnable;
     /**
      * Opens or closes the IME.
