@@ -1,0 +1,8 @@
+<resources>
+
+    <style name="ListHeader" parent="ListHeaderBase">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+</resources>

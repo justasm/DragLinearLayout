@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DragLinearLayout Demo</string>
+    <string name="list_title">Simple linear layout</string>
+    <string name="list_item_1">Drag me! Drop me!</string>
+    <string name="list_item_2">Swap with me! Swap with me!</string>
+    <string name="list_item_3">I\'m quite sensitive\nabout my height.</string>
+    <string name="list_item_4">I heard that one of us is a Button!</string>
+    <string name="list_item_nodrag">Someone forgot to make me draggable…</string>
+    <string name="scroll_view_title">Linear layout within ScrollView</string>
+    <string name="default_icon_description">Icon.</string>
+    <string name="note_add_prompt">Add new note</string>
+    <string name="note_complete_prompt">Write note</string>
+    <string name="action_view_note_demo">View DragLinearLayout inside ScrollView demo</string>
+
+    <string-array name="notes">
+        <item>I am an EditText. Tap me to edit me!</item>
+        <item>I deserve priority! Grab my handle on the left and drag me higher!</item>
+    </string-array>
+
+    <string name="title_activity_note">Drag&amp;Drop Notes Demo</string>
+
+</resources>

@@ -1,0 +1,51 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="ListHeaderBase" parent="@android:style/Widget.TextView">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingTop">@dimen/half_default_vertical_margin</item>
+        <item name="android:paddingBottom">@dimen/half_default_vertical_margin</item>
+    </style>
+    <style name="ListHeader" parent="ListHeaderBase" />
+
+    <style name="SpaciousListItem" parent="@android:style/Widget.TextView">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingTop">@dimen/default_vertical_margin</item>
+        <item name="android:paddingBottom">@dimen/default_vertical_margin</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="MinimalistButton" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/selector_white_button</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingTop">@dimen/default_vertical_margin</item>
+        <item name="android:paddingBottom">@dimen/default_vertical_margin</item>
+        <item name="android:gravity">left</item>
+    </style>
+
+    <style name="MinimalistEditText" parent="android:Widget.EditText">
+        <item name="android:background">@null</item>
+        <item name="android:textColorHint">#aaeb0000</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:paddingLeft">@dimen/half_default_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/half_default_horizontal_margin</item>
+        <item name="android:paddingBottom">@dimen/half_default_vertical_margin</item>
+        <item name="android:paddingTop">@dimen/quarter_default_vertical_margin</item>
+    </style>
+
+</resources>

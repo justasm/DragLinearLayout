@@ -1,0 +1,54 @@
+<com.jmedeisis.draglinearlayout.DragLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/default_vertical_margin"
+    tools:context=".DemoActivity" >
+
+    <TextView
+        android:text="@string/list_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ListHeader" />
+
+    <TextView
+        android:text="@string/list_item_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/SpaciousListItem" />
+
+    <TextView
+        android:text="@string/list_item_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/SpaciousListItem" />
+
+    <TextView
+        android:text="@string/list_item_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/SpaciousListItem" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cherry_blossom"/>
+
+    <TextView
+        android:text="@string/list_item_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/SpaciousListItem" />
+
+    <Button
+        android:id="@+id/noteDemoButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/action_view_note_demo"
+        style="@style/MinimalistButton"/>
+
+
+</com.jmedeisis.draglinearlayout.DragLinearLayout>

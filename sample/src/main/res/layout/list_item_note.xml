@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="horizontal"
+    android:focusableInTouchMode="true" >
+
+    <FrameLayout
+        android:id="@+id/noteIconContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/quarter_default_horizontal_margin" >
+
+        <ImageView
+            android:id="@+id/noteIcon"
+            android:layout_width="@dimen/note_button_small_size"
+            android:layout_height="@dimen/note_button_small_size"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="@dimen/note_button_small_margin_top"
+            android:contentDescription="@string/default_icon_description"
+            android:src="@drawable/ic_action_new_holo_light" />
+    </FrameLayout>
+
+    <!--
+    Saving is disabled as many copies of this layout will be instantiated;
+    all EditTexts will have the same id, and their save state would override
+    that of the others on any configuration change.
+    -->
+    
+    <EditText
+        android:id="@+id/noteText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="@string/note_add_prompt"
+        android:saveEnabled="false"
+        android:inputType="text|textNoSuggestions|textMultiLine"
+        style="@style/MinimalistEditText" />
+
+</LinearLayout>

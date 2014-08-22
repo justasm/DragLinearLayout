@@ -10,17 +10,74 @@ will not be draggable. To set an existing `View` as draggable, use
 `DragLinearLayout#setViewDraggable(View, View)`, passing in the child `View` and a (non-null!)
 `View` that will act as the handle for dragging it (this can be the `View` itself).
 
+XML layout file:
+
+    <com.jmedeisis.draglinearlayout.DragLinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text" />
+    
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image"/>
+    
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_text"/>
+            
+    </com.jmedeisis.draglinearlayout.DragLinearLayout>
+    
+Enabling drag & drop for all child views:
+
+    DragLinearLayout dragLinearLayout = (DragLinearLayout) findViewById(R.id.container);
+    for(int i = 0; i < dragLinearLayout.getChildCount(); i++){
+        View child = dragLinearLayout.getChildAt(i);
+        dragLinearLayout.setViewDraggable(child, child); // the child is its own drag handle
+    }
+
 Use `#addDragView(View, View)`,`#addDragView(View, View, int)` and `#removeDragView(View)` to
-manage draggable children dynamically.
+manage draggable children dynamically:
+
+        final View view = View.inflate(context, R.layout.view_layout, null);
+        dragLinearLayout.addDragView(view, view.findViewById(R.id.view_drag_handle));
+        
+        // ..
+        
+        dragLinearLayout.removeDragView(view);
 
 Attach an `OnViewSwapListener` with `#setOnViewSwapListener(OnViewSwapListener)` to detect changes
-to the ordering of child `View`s.
+to the ordering of child `View`s:
 
-A sample activity project will be included soon.
+    dragLinearLayout.setOnViewSwapListener(new DragLinearLayout.OnViewSwapListener() {
+        @Override
+        public void onSwap(View firstView, int firstPosition, View secondView, int secondPosition) {
+            // update data, etc..
+        }
+    });
+
+When placing the `DragLinearLayout` inside a `ScrollView`, call `#setContainerScrollView(ScrollView)`
+to enable the user to scroll while dragging a child view.
+
+For best visual results, use children that have opaque backgrounds. Furthermore, do not use
+horizontal padding for the `DragLinearLayout`; instead, let children apply their own horizontal
+padding.
+
+Refer to the included sample activity project for a demonstration of the above usage techniques
+and more.
 
 Limitations
 -----------
-- Only supports vertical `LinearLayout`s.
+- Supports only the `LinearLayout#VERTICAL` orientation.
 - Works for API levels 7+ with a dependency on [NineOldAndroids](http://nineoldandroids.com/).
 For API levels 11+, the dependency could be removed by replacing all
 `com.nineoldandroids.animation.*` imports with their identically named `android.animation.*`
