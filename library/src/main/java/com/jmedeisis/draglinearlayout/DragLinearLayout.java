@@ -155,6 +155,7 @@ public class DragLinearLayout extends LinearLayout {
             height = -1;
             totalDragOffset = 0;
             targetTopOffset = 0;
+            if(null != settleAnimation) settleAnimation.end();
             settleAnimation = null;
         }
     }
@@ -342,9 +343,6 @@ public class DragLinearLayout extends LinearLayout {
 
         // complete any existing animations, both for the newly selected child and the previous dragged one
         draggableChildren.get(position).endExistingAnimation();
-        if(draggedItem.settling()){
-            draggedItem.settleAnimation.end();
-        }
 
         draggedItem.setValidOnPossibleDrag(child, position);
     }
@@ -383,6 +381,7 @@ public class DragLinearLayout extends LinearLayout {
                     return; // already stopped
                 }
 
+                draggedItem.settleAnimation = null;
                 draggedItem.setInvalid();
 
                 if(null != dragTopShadowDrawable) dragTopShadowDrawable.setAlpha(255);
@@ -600,13 +599,15 @@ public class DragLinearLayout extends LinearLayout {
     public boolean onInterceptTouchEvent(MotionEvent event){
         switch(MotionEventCompat.getActionMasked(event)){
             case MotionEvent.ACTION_DOWN: {
+                if(draggedItem.valid) return false; // an existing item is (likely) settling
                 downY = (int) MotionEventCompat.getY(event, 0);
                 activePointerId = MotionEventCompat.getPointerId(event, 0);
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
                 if(!draggedItem.valid) return false;
-                final int pointerIndex = MotionEventCompat.getActionIndex(event);
+                if(INVALID_POINTER_ID == activePointerId) break;
+                final int pointerIndex = event.findPointerIndex(activePointerId);
                 final float y = MotionEventCompat.getY(event, pointerIndex);
                 final float dy = y - downY;
                 if(Math.abs(dy) > slop){
@@ -619,7 +620,7 @@ public class DragLinearLayout extends LinearLayout {
                 final int pointerIndex = MotionEventCompat.getActionIndex(event);
                 final int pointerId = MotionEventCompat.getPointerId(event, pointerIndex);
 
-                if (pointerId != activePointerId) break; // if active pointer, fall through and cancel!
+                if(pointerId != activePointerId) break; // if active pointer, fall through and cancel!
             }
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP: {
@@ -637,12 +638,13 @@ public class DragLinearLayout extends LinearLayout {
     public boolean onTouchEvent(MotionEvent event){
         switch(MotionEventCompat.getActionMasked(event)){
             case MotionEvent.ACTION_DOWN: {
-                if(!draggedItem.valid) return false;
+                if(!draggedItem.valid || draggedItem.settling()) return false;
                 startDrag();
                 return true;
             }
             case MotionEvent.ACTION_MOVE: {
-                if (INVALID_POINTER_ID == activePointerId) break;
+                if(!draggedItem.dragging) break;
+                if(INVALID_POINTER_ID == activePointerId) break;
 
                 int pointerIndex = event.findPointerIndex(activePointerId);
                 int lastEventY = (int) MotionEventCompat.getY(event, pointerIndex);
@@ -655,13 +657,13 @@ public class DragLinearLayout extends LinearLayout {
                 final int pointerIndex = MotionEventCompat.getActionIndex(event);
                 final int pointerId = MotionEventCompat.getPointerId(event, pointerIndex);
 
-                if (pointerId != activePointerId) break; // if active pointer, fall through and cancel!
+                if(pointerId != activePointerId) break; // if active pointer, fall through and cancel!
             }
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP: {
                 onTouchEnded();
 
-                stopDrag();
+                if(draggedItem.dragging) stopDrag(); // TODO test whether check necessary
                 return true;
             }
         }
