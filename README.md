@@ -1,7 +1,18 @@
 DragLinearLayout
 ================
 
+![Dragging and swapping children views.](/sample/sample_in_action.gif)
+
 An Android `LinearLayout` that supports draggable and swappable child `View`s.
+
+Why?
+----
+Why bother doing drag & swap in a `LinearLayout` [when][drag_list_1] [there are][drag_list_2]
+[so many][drag_list_3] [solutions][drag_list_4] for `ListView`?
+
+1. *Simplicity* - no need for `ListAdapter`s. By default, works like a `LinearLayout`.
+2. *Flexibility* - supports heterogeneous, selectively draggable (or not draggable), children.
+3. *Portability* - can be used in any layout, e.g. as a child in a `ScrollView` container.
 
 Usage
 -----
@@ -37,7 +48,7 @@ XML layout file:
             
     </com.jmedeisis.draglinearlayout.DragLinearLayout>
     
-Enabling drag & drop for all child views:
+Enabling drag & swap for all child views:
 
     DragLinearLayout dragLinearLayout = (DragLinearLayout) findViewById(R.id.container);
     for(int i = 0; i < dragLinearLayout.getChildCount(); i++){
@@ -86,4 +97,9 @@ counterparts.
 License
 -------
 This project is licensed under the terms of the MIT license.
-You may find a copy of the license in the included LICENSE file.
+You may find a copy of the license in the included `LICENSE` file.
+
+[drag_list_1]: https://github.com/bauerca/drag-sort-listview
+[drag_list_2]: https://plus.google.com/u/0/+AndroidDevelopers/posts/7Qo9vmeqKwC
+[drag_list_3]: http://ericharlow.blogspot.com/2010/10/experience-android-drag-and-drop-list.html
+[drag_list_4]: https://github.com/terlici/DragNDropList
