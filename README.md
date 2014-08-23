@@ -53,25 +53,27 @@ Enabling drag & swap for all child views:
     DragLinearLayout dragLinearLayout = (DragLinearLayout) findViewById(R.id.container);
     for(int i = 0; i < dragLinearLayout.getChildCount(); i++){
         View child = dragLinearLayout.getChildAt(i);
-        dragLinearLayout.setViewDraggable(child, child); // the child is its own drag handle
+        // the child will act as its own drag handle
+        dragLinearLayout.setViewDraggable(child, child);
     }
 
 Use `#addDragView(View, View)`,`#addDragView(View, View, int)` and `#removeDragView(View)` to
 manage draggable children dynamically:
 
-        final View view = View.inflate(context, R.layout.view_layout, null);
-        dragLinearLayout.addDragView(view, view.findViewById(R.id.view_drag_handle));
-        
-        // ..
-        
-        dragLinearLayout.removeDragView(view);
+    final View view = View.inflate(context, R.layout.view_layout, null);
+    dragLinearLayout.addDragView(view, view.findViewById(R.id.view_drag_handle));
+    
+    // ..
+    
+    dragLinearLayout.removeDragView(view);
 
 Attach an `OnViewSwapListener` with `#setOnViewSwapListener(OnViewSwapListener)` to detect changes
 to the ordering of child `View`s:
 
     dragLinearLayout.setOnViewSwapListener(new DragLinearLayout.OnViewSwapListener() {
         @Override
-        public void onSwap(View firstView, int firstPosition, View secondView, int secondPosition) {
+        public void onSwap(View firstView, int firstPosition,
+                View secondView, int secondPosition) {
             // update data, etc..
         }
     });
