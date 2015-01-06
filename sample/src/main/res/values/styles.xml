@@ -30,7 +30,7 @@
         <item name="android:background">@android:color/white</item>
     </style>
 
-    <style name="MinimalistButton" parent="@android:style/Widget.Button">
+    <style name="MinimalistButtonBase" parent="@android:style/Widget.Button">
         <item name="android:background">@drawable/selector_white_button</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">16sp</item>
@@ -40,6 +40,7 @@
         <item name="android:paddingBottom">@dimen/default_vertical_margin</item>
         <item name="android:gravity">left</item>
     </style>
+    <style name="MinimalistButton" parent="MinimalistButtonBase" />
 
     <style name="MinimalistEditText" parent="android:Widget.EditText">
         <item name="android:background">@null</item>

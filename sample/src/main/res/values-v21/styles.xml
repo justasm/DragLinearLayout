@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="MinimalistButton" parent="MinimalistButtonBase">
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+</resources>
