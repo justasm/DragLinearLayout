@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -191,7 +192,7 @@ public class DragLinearLayout extends LinearLayout {
 
         setOrientation(LinearLayout.VERTICAL);
 
-        draggableChildren = new SparseArray<DraggableChild>();
+        draggableChildren = new SparseArray<>();
 
         draggedItem = new DragItem();
         ViewConfiguration vc = ViewConfiguration.get(context);
@@ -417,11 +418,6 @@ public class DragLinearLayout extends LinearLayout {
         if(isBelow || isAbove){
             final View switchView = isBelow ? belowView : aboveView;
 
-            if(null == switchView){
-                Log.e(LOG_TAG, "Switching with null");
-                return;
-            }
-
             // swap elements
             final int originalPosition = draggedItem.position;
             final int switchPosition = isBelow ? belowPosition : abovePosition;
@@ -544,7 +540,7 @@ public class DragLinearLayout extends LinearLayout {
     }
 
     @Override
-    protected void dispatchDraw(Canvas canvas){
+    protected void dispatchDraw(@NonNull Canvas canvas){
         super.dispatchDraw(canvas);
 
         if(draggedItem.valid && (draggedItem.dragging || draggedItem.settling())){
@@ -635,7 +631,7 @@ public class DragLinearLayout extends LinearLayout {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event){
+    public boolean onTouchEvent(@NonNull MotionEvent event){
         switch(MotionEventCompat.getActionMasked(event)){
             case MotionEvent.ACTION_DOWN: {
                 if(!draggedItem.valid || draggedItem.settling()) return false;
