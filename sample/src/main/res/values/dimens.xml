@@ -10,6 +10,6 @@
     <dimen name="quarter_default_vertical_margin">4dp</dimen>
     <dimen name="note_button_small_size">16dp</dimen>
     <dimen name="note_button_small_margin_top">8dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="min_touch_target">48dp</dimen>
 
 </resources>

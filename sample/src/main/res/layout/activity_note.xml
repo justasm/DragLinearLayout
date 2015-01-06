@@ -1,7 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".NoteActivity">
 
     <ScrollView
@@ -20,7 +18,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="320dp"
                 android:src="@drawable/cherry_blossom"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/demo_image_content_description" />
 
             <TextView
                 android:text="@string/scroll_view_title"
@@ -32,4 +31,4 @@
 
     </ScrollView>
 
-</FrameLayout>
+</merge>

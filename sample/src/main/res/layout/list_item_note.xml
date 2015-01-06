@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
-    android:paddingTop="@dimen/half_default_vertical_margin"
-    android:paddingBottom="@dimen/half_default_vertical_margin"
+    android:minHeight="@dimen/min_touch_target"
     android:orientation="horizontal"
     android:focusableInTouchMode="true" >
 
@@ -12,7 +11,10 @@
         android:id="@+id/noteIconContainer"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:paddingTop="@dimen/half_default_vertical_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/quarter_default_horizontal_margin"
         android:paddingRight="@dimen/quarter_default_horizontal_margin" >
 
         <ImageView
@@ -36,7 +38,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:paddingTop="@dimen/quarter_default_vertical_margin"
+        android:paddingTop="13dp"
         android:hint="@string/note_add_prompt"
         android:saveEnabled="false"
         android:inputType="text|textNoSuggestions|textMultiLine"

@@ -35,7 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/cherry_blossom"/>
+        android:src="@drawable/cherry_blossom"
+        android:contentDescription="@string/demo_image_content_description" />
 
     <TextView
         android:text="@string/list_item_4"
