@@ -3,6 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="colorPrimary">#EB2F2F</item>
+        <item name="colorPrimaryDark">#B82525</item>
+        <item name="colorAccent">#25B84E</item>
     </style>
 
     <style name="ListHeaderBase" parent="@android:style/Widget.TextView">
@@ -40,7 +43,7 @@
 
     <style name="MinimalistEditText" parent="android:Widget.EditText">
         <item name="android:background">@null</item>
-        <item name="android:textColorHint">#aaeb0000</item>
+        <item name="android:textColorHint">?attr/colorAccent</item>
         <item name="android:textSize">16sp</item>
         <item name="android:paddingLeft">@dimen/half_default_horizontal_margin</item>
         <item name="android:paddingRight">@dimen/half_default_horizontal_margin</item>
