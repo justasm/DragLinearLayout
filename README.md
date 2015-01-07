@@ -16,6 +16,10 @@ Why bother doing drag & swap in a `LinearLayout` [when][drag_list_1] [there are]
 
 Usage
 -----
+Add it to your project using Gradle:
+
+    compile 'com.jmedeisis:draglinearlayout:1.0.0'
+
 The `DragLinearLayout` can be used in place of any `LinearLayout`. However, by default, children
 will not be draggable. To set an existing `View` as draggable, use
 `DragLinearLayout#setViewDraggable(View, View)`, passing in the child `View` and a (non-null!)
