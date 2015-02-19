@@ -265,6 +265,7 @@ public class DragLinearLayout extends LinearLayout {
      * Calls {@link #removeView(android.view.View)} and correctly updates the drag-ability state of
      * all remaining views.
      */
+    @SuppressWarnings("UnusedDeclaration")
     public void removeDragView(View child){
         if(this == child.getParent()){
             final int index = indexOfChild(child);
@@ -299,9 +300,11 @@ public class DragLinearLayout extends LinearLayout {
      * if one is registered via {@link #setContainerScrollView(android.widget.ScrollView)},
      * is scrolled.
      */
+    @SuppressWarnings("UnusedDeclaration")
     public void setScrollSensitiveHeight(int height){
         this.scrollSensitiveAreaHeight = height;
     }
+    @SuppressWarnings("UnusedDeclaration")
     public int getScrollSensitiveHeight(){
         return scrollSensitiveAreaHeight;
     }
@@ -518,9 +521,9 @@ public class DragLinearLayout extends LinearLayout {
     }
 
     /** By Ken Perlin. See <a href="http://en.wikipedia.org/wiki/Smoothstep">Smoothstep - Wikipedia</a>. */
-    private static float smootherStep(float e1, float e2, float x){
-        x = Math.max(0, Math.min((x - e1) / (e2 - e1), 1));
-        return x * x * x * (x * (x * 6 - 15) + 10);
+    private static float smootherStep(float edge1, float edge2, float val){
+        val = Math.max(0, Math.min((val - edge1) / (edge2 - edge1), 1));
+        return val * val * val * (val * (val * 6 - 15) + 10);
     }
 
     @Override
