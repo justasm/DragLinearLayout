@@ -180,9 +180,6 @@ public class DragLinearLayout extends LinearLayout {
     private static final int DEFAULT_SCROLL_SENSITIVE_AREA_HEIGHT_DP = 48;
     private static final int MAX_DRAG_SCROLL_SPEED = 16;
 
-    /*private int placeholderViewResId;
-    private View placeholderView;*/
-
     public DragLinearLayout(Context context){
         this(context, null);
     }
@@ -212,13 +209,9 @@ public class DragLinearLayout extends LinearLayout {
         try{
             scrollSensitiveAreaHeight = a.getDimensionPixelSize(R.styleable.DragLinearLayout_scrollSensitiveHeight,
                     (int) (DEFAULT_SCROLL_SENSITIVE_AREA_HEIGHT_DP * resources.getDisplayMetrics().density + 0.5f));
-            // placeholderViewResId = a.getResourceId(R.styleable.DragLinearLayout_placeholderView, 0);
         } finally {
             a.recycle();
         }
-        /*if(0 != placeholderViewResId){
-            placeholderView = View.inflate(context, placeholderViewResId, null);
-        }*/
 
         nominalDistanceScaled = (int)(NOMINAL_DISTANCE * resources.getDisplayMetrics().density + 0.5f);
     }
@@ -323,15 +316,6 @@ public class DragLinearLayout extends LinearLayout {
         return Math.min(MAX_SWITCH_DURATION, Math.max(MIN_SWITCH_DURATION,
                 (long)(NOMINAL_SWITCH_DURATION * Math.abs(distance) / nominalDistanceScaled)));
     }
-
-    /*private void layoutPlaceholder(View view){
-        int ws = MeasureSpec.makeMeasureSpec(view.getWidth(), MeasureSpec.EXACTLY);
-        int hs = MeasureSpec.makeMeasureSpec(view.getHeight(), MeasureSpec.EXACTLY);
-
-        placeholderView.measure(ws, hs);
-        placeholderView.layout(0, 0,
-                placeholderView.getMeasuredWidth(), placeholderView.getMeasuredHeight());
-    }*/
 
     /**
      * Initiates a new {@link #draggedItem} unless the current one is still
