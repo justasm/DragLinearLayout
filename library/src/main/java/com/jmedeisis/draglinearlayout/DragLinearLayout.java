@@ -27,6 +27,7 @@ import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
+import com.nineoldandroids.view.ViewHelper;
 
 /**
  * A LinearLayout that supports children Views that can be dragged and swapped around.
@@ -76,9 +77,11 @@ public class DragLinearLayout extends LinearLayout {
         private ValueAnimator swapAnimation;
 
         public void endExistingAnimation(){
-            if(null != swapAnimation){
-                swapAnimation.end();
-            }
+            if(null != swapAnimation) swapAnimation.end();
+        }
+
+        public void cancelExistingAnimation(){
+            if(null != swapAnimation) swapAnimation.cancel();
         }
     }
 
@@ -315,7 +318,7 @@ public class DragLinearLayout extends LinearLayout {
     }
 
     /** A linear relationship b/w distance and duration, bounded. */
-    private long getTranslateAnimationDuration(int distance){
+    private long getTranslateAnimationDuration(float distance){
         return Math.min(MAX_SWITCH_DURATION, Math.max(MIN_SWITCH_DURATION,
                 (long)(NOMINAL_SWITCH_DURATION * Math.abs(distance) / nominalDistanceScaled)));
     }
@@ -408,7 +411,9 @@ public class DragLinearLayout extends LinearLayout {
             // swap elements
             final int originalPosition = draggedItem.position;
             final int switchPosition = isBelow ? belowPosition : abovePosition;
-            final int switchViewStartTop = switchView.getTop();
+
+            draggableChildren.get(switchPosition).cancelExistingAnimation();
+            final float switchViewStartY = (int) ViewHelper.getY(switchView);
 
             if(null != swapListener){
                 swapListener.onSwap(draggedItem.view, draggedItem.position, switchView, switchPosition);
@@ -436,8 +441,8 @@ public class DragLinearLayout extends LinearLayout {
                     switchViewObserver.removeOnPreDrawListener(this);
 
                     final ObjectAnimator switchAnimator = ObjectAnimator.ofFloat(switchView, "y",
-                            switchViewStartTop, switchView.getTop())
-                            .setDuration(getTranslateAnimationDuration(switchView.getTop() - switchViewStartTop));
+                            switchViewStartY, switchView.getTop())
+                            .setDuration(getTranslateAnimationDuration(switchView.getTop() - switchViewStartY));
                     switchAnimator.addListener(new AnimatorListenerAdapter(){
                         @Override
                         public void onAnimationStart(Animator animation) {
