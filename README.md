@@ -18,7 +18,7 @@ Usage
 -----
 Add it to your project using Gradle:
 
-    compile 'com.jmedeisis:draglinearlayout:1.0.0'
+    compile 'com.jmedeisis:draglinearlayout:1.0.1'
 
 The `DragLinearLayout` can be used in place of any `LinearLayout`. However, by default, children
 will not be draggable. To set an existing `View` as draggable, use

@@ -9,7 +9,7 @@ android {
         minSdkVersion 7
         targetSdkVersion 21
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.0.1"
     }
     buildTypes {
         release {
@@ -30,7 +30,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.novoda:bintray-release:0.2.5'
+        classpath 'com.novoda:bintray-release:0.2.7'
     }
 }
 
@@ -39,7 +39,7 @@ publish {
     userOrg = 'justasm'
     groupId = 'com.jmedeisis'
     artifactId = 'draglinearlayout'
-    version = "1.0.0"
+    version = "1.0.1"
     licences = ['MIT']
     description = "Android LinearLayout with drag and drop to reorder."
     website = 'https://github.com/justasm/DragLinearLayout'
