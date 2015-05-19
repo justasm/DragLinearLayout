@@ -6,7 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.jmedeisis.draglinearlayout.DragLinearLayout;
 
-public class NoteActivity extends ActionBarActivity {
+public class NoteActivity extends AppCompatActivity {
 
     DragLinearLayout noteContainer;
     int firstNoteIndex;
