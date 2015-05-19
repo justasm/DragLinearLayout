@@ -1,5 +1,9 @@
 package com.jmedeisis.example.draglinearlayout;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -15,10 +19,6 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.jmedeisis.draglinearlayout.DragLinearLayout;
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorListenerAdapter;
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ObjectAnimator;
 
 public class NoteActivity extends ActionBarActivity {
 

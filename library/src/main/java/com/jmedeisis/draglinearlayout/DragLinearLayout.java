@@ -1,5 +1,9 @@
 package com.jmedeisis.draglinearlayout;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -21,13 +25,6 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-
-import com.nineoldandroids.animation.Animator;
-import com.nineoldandroids.animation.AnimatorListenerAdapter;
-import com.nineoldandroids.animation.ObjectAnimator;
-import com.nineoldandroids.animation.ValueAnimator;
-import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
-import com.nineoldandroids.view.ViewHelper;
 
 /**
  * A LinearLayout that supports children Views that can be dragged and swapped around.
@@ -371,7 +368,7 @@ public class DragLinearLayout extends LinearLayout {
         draggedItem.settleAnimation = ValueAnimator.ofFloat(draggedItem.totalDragOffset,
                 draggedItem.totalDragOffset - draggedItem.targetTopOffset)
                 .setDuration(getTranslateAnimationDuration(draggedItem.targetTopOffset));
-        draggedItem.settleAnimation.addUpdateListener(new AnimatorUpdateListener() {
+        draggedItem.settleAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 if (!draggedItem.valid) return; // already stopped
@@ -437,7 +434,7 @@ public class DragLinearLayout extends LinearLayout {
             final int switchPosition = isBelow ? belowPosition : abovePosition;
 
             draggableChildren.get(switchPosition).cancelExistingAnimation();
-            final float switchViewStartY = (int) ViewHelper.getY(switchView);
+            final float switchViewStartY = switchView.getY();
 
             if (null != swapListener) {
                 swapListener.onSwap(draggedItem.view, draggedItem.position, switchView, switchPosition);
