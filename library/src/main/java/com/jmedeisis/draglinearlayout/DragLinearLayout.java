@@ -38,7 +38,7 @@ import android.widget.ScrollView;
  * declared as draggable to prevent memory leaks and/or subtle bugs. Pull requests welcome!
  */
 public class DragLinearLayout extends LinearLayout {
-    private static final String LOG_TAG = "DragLinearLayout";
+    private static final String LOG_TAG = DragLinearLayout.class.getSimpleName();
     private static final long NOMINAL_SWITCH_DURATION = 150;
     private static final long MIN_SWITCH_DURATION = NOMINAL_SWITCH_DURATION;
     private static final long MAX_SWITCH_DURATION = NOMINAL_SWITCH_DURATION * 2;
