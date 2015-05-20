@@ -12,8 +12,8 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -58,7 +58,7 @@ public class DragLinearLayout extends LinearLayout {
          * <p/>
          * No guarantee is made as to which of the two has a lesser/greater position.
          */
-        public void onSwap(View firstView, int firstPosition, View secondView, int secondPosition);
+        void onSwap(View firstView, int firstPosition, View secondView, int secondPosition);
     }
 
     private OnViewSwapListener swapListener;
@@ -208,13 +208,8 @@ public class DragLinearLayout extends LinearLayout {
         slop = vc.getScaledTouchSlop();
 
         final Resources resources = getResources();
-        // for some reason, the drawable bounds for the top drop shadow do not work pre-API 11.. :/
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            dragTopShadowDrawable = resources.getDrawable(R.drawable.ab_solid_shadow_holo_flipped);
-        } else {
-            dragTopShadowDrawable = null;
-        }
-        dragBottomShadowDrawable = resources.getDrawable(R.drawable.ab_solid_shadow_holo);
+        dragTopShadowDrawable = ContextCompat.getDrawable(context, R.drawable.ab_solid_shadow_holo_flipped);
+        dragBottomShadowDrawable = ContextCompat.getDrawable(context, R.drawable.ab_solid_shadow_holo);
         dragShadowHeight = resources.getDimensionPixelSize(R.dimen.downwards_drop_shadow_height);
 
         TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.DragLinearLayout, 0, 0);
