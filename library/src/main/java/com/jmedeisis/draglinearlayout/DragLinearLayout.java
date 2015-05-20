@@ -35,9 +35,7 @@ import android.widget.ScrollView;
  * <p/>
  * Currently, no error-checking is done on standard {@link #addView(android.view.View)} and
  * {@link #removeView(android.view.View)} calls, so avoid using these with children previously
- * declared as draggable to prevent memory leaks and/or subtle bugs.
- * <p/>
- * Apologies - this class is neither clear nor readable. Maybe someday. But it works!
+ * declared as draggable to prevent memory leaks and/or subtle bugs. Pull requests welcome!
  */
 public class DragLinearLayout extends LinearLayout {
     private static final String LOG_TAG = "DragLinearLayout";
@@ -89,10 +87,10 @@ public class DragLinearLayout extends LinearLayout {
      * Holds state information about the currently dragged item.
      * <p/>
      * Rough lifecycle:
-     * <li>#setValidOnPossibleDrag - #valid == true</li>
+     * <li>#startDetectingOnPossibleDrag - #detecting == true</li>
      * <li>     if drag is recognised, #onDragStart - #dragging == true</li>
      * <li>     if drag ends, #onDragStop - #dragging == false, #settling == true</li>
-     * <li>if gesture ends without drag, or settling finishes, #setInvalid - #valid == false</li>
+     * <li>if gesture ends without drag, or settling finishes, #stopDetecting - #detecting == false</li>
      */
     private class DragItem {
         private View view;
@@ -105,14 +103,14 @@ public class DragLinearLayout extends LinearLayout {
         private int targetTopOffset;
         private ValueAnimator settleAnimation;
 
-        private boolean valid;
+        private boolean detecting;
         private boolean dragging;
 
         public DragItem() {
-            setInvalid();
+            stopDetecting();
         }
 
-        public void setValidOnPossibleDrag(final View view, final int position) {
+        public void startDetectingOnPossibleDrag(final View view, final int position) {
             this.view = view;
             this.startVisibility = view.getVisibility();
             this.viewDrawable = getDragDrawable(view);
@@ -123,7 +121,7 @@ public class DragLinearLayout extends LinearLayout {
             this.targetTopOffset = 0;
             this.settleAnimation = null;
 
-            this.valid = true;
+            this.detecting = true;
         }
 
         public void onDragStart() {
@@ -148,8 +146,8 @@ public class DragLinearLayout extends LinearLayout {
             return null != settleAnimation;
         }
 
-        public void setInvalid() {
-            this.valid = false;
+        public void stopDetecting() {
+            this.detecting = false;
             if (null != view) view.setVisibility(startVisibility);
             view = null;
             startVisibility = -1;
@@ -165,7 +163,7 @@ public class DragLinearLayout extends LinearLayout {
     }
 
     /**
-     * The currently dragged item, if {@link com.jmedeisis.draglinearlayout.DragLinearLayout.DragItem#valid}.
+     * The currently dragged item, if {@link com.jmedeisis.draglinearlayout.DragLinearLayout.DragItem#detecting}.
      */
     private final DragItem draggedItem;
     private final int slop;
@@ -338,17 +336,18 @@ public class DragLinearLayout extends LinearLayout {
 
     /**
      * Initiates a new {@link #draggedItem} unless the current one is still
-     * {@link com.jmedeisis.draglinearlayout.DragLinearLayout.DragItem#valid}.
+     * {@link com.jmedeisis.draglinearlayout.DragLinearLayout.DragItem#detecting}.
      */
     private void startDetectingDrag(View child) {
-        if (draggedItem.valid) return; // existing drag in process, only one at a time is allowed
+        if (draggedItem.detecting)
+            return; // existing drag in process, only one at a time is allowed
 
         final int position = indexOfChild(child);
 
         // complete any existing animations, both for the newly selected child and the previous dragged one
         draggableChildren.get(position).endExistingAnimation();
 
-        draggedItem.setValidOnPossibleDrag(child, position);
+        draggedItem.startDetectingOnPossibleDrag(child, position);
     }
 
     private void startDrag() {
@@ -359,14 +358,14 @@ public class DragLinearLayout extends LinearLayout {
     /**
      * Animates the dragged item to its final resting position.
      */
-    private void stopDrag() {
+    private void onDragStop() {
         draggedItem.settleAnimation = ValueAnimator.ofFloat(draggedItem.totalDragOffset,
                 draggedItem.totalDragOffset - draggedItem.targetTopOffset)
                 .setDuration(getTranslateAnimationDuration(draggedItem.targetTopOffset));
         draggedItem.settleAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                if (!draggedItem.valid) return; // already stopped
+                if (!draggedItem.detecting) return; // already stopped
 
                 draggedItem.setTotalOffset(((Float) animation.getAnimatedValue()).intValue());
 
@@ -384,12 +383,12 @@ public class DragLinearLayout extends LinearLayout {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (!draggedItem.valid) {
+                if (!draggedItem.detecting) {
                     return; // already stopped
                 }
 
                 draggedItem.settleAnimation = null;
-                draggedItem.setInvalid();
+                draggedItem.stopDetecting();
 
                 if (null != dragTopShadowDrawable) dragTopShadowDrawable.setAlpha(255);
                 dragBottomShadowDrawable.setAlpha(255);
@@ -491,7 +490,7 @@ public class DragLinearLayout extends LinearLayout {
                         Log.d(LOG_TAG, "Updating settle animation");
                         draggedItem.settleAnimation.removeAllListeners();
                         draggedItem.settleAnimation.cancel();
-                        stopDrag();
+                        onDragStop();
                     }
                     return true;
                 }
@@ -555,7 +554,7 @@ public class DragLinearLayout extends LinearLayout {
     protected void dispatchDraw(@NonNull Canvas canvas) {
         super.dispatchDraw(canvas);
 
-        if (draggedItem.valid && (draggedItem.dragging || draggedItem.settling())) {
+        if (draggedItem.detecting && (draggedItem.dragging || draggedItem.settling())) {
             canvas.save();
             canvas.translate(0, draggedItem.totalDragOffset);
             draggedItem.viewDrawable.draw(canvas);
@@ -583,37 +582,37 @@ public class DragLinearLayout extends LinearLayout {
      * 1) User taps outside any children.
      *      #onInterceptTouchEvent receives DOWN
      *      #onTouchEvent receives DOWN
-     *          draggedItem.valid == false, we return false and no further events are received
+     *          draggedItem.detecting == false, we return false and no further events are received
      * 2) User taps on non-interactive drag handle / child, e.g. TextView or ImageView.
      *      #onInterceptTouchEvent receives DOWN
      *      DragHandleOnTouchListener (attached to each draggable child) #onTouch receives DOWN
-     *      #startDetectingDrag is called, draggedItem is now valid
+     *      #startDetectingDrag is called, draggedItem is now detecting
      *      view does not handle touch, so our #onTouchEvent receives DOWN
-     *          draggedItem.valid == true, we #startDrag() and proceed to handle the drag
+     *          draggedItem.detecting == true, we #startDrag() and proceed to handle the drag
      * 3) User taps on interactive drag handle / child, e.g. Button.
      *      #onInterceptTouchEvent receives DOWN
      *      DragHandleOnTouchListener (attached to each draggable child) #onTouch receives DOWN
-     *      #startDetectingDrag is called, draggedItem is now valid
+     *      #startDetectingDrag is called, draggedItem is now detecting
      *      view handles touch, so our #onTouchEvent is not called yet
      *      #onInterceptTouchEvent receives ACTION_MOVE
      *      if dy > touch slop, we assume user wants to drag and intercept the event
      *      #onTouchEvent receives further ACTION_MOVE events, proceed to handle the drag
      *
      * For cases 2) and 3), lifting the active pointer at any point in the sequence of events
-     * triggers #onTouchEnded and the draggedItem, if valid, is #setInvalid.
+     * triggers #onTouchEnd and the draggedItem, if detecting, is #stopDetecting.
      */
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         switch (MotionEventCompat.getActionMasked(event)) {
             case MotionEvent.ACTION_DOWN: {
-                if (draggedItem.valid) return false; // an existing item is (likely) settling
+                if (draggedItem.detecting) return false; // an existing item is (likely) settling
                 downY = (int) MotionEventCompat.getY(event, 0);
                 activePointerId = MotionEventCompat.getPointerId(event, 0);
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
-                if (!draggedItem.valid) return false;
+                if (!draggedItem.detecting) return false;
                 if (INVALID_POINTER_ID == activePointerId) break;
                 final int pointerIndex = event.findPointerIndex(activePointerId);
                 final float y = MotionEventCompat.getY(event, pointerIndex);
@@ -633,9 +632,9 @@ public class DragLinearLayout extends LinearLayout {
             }
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP: {
-                onTouchEnded();
+                onTouchEnd();
 
-                if (draggedItem.valid) draggedItem.setInvalid();
+                if (draggedItem.detecting) draggedItem.stopDetecting();
                 break;
             }
         }
@@ -647,7 +646,7 @@ public class DragLinearLayout extends LinearLayout {
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         switch (MotionEventCompat.getActionMasked(event)) {
             case MotionEvent.ACTION_DOWN: {
-                if (!draggedItem.valid || draggedItem.settling()) return false;
+                if (!draggedItem.detecting || draggedItem.settling()) return false;
                 startDrag();
                 return true;
             }
@@ -671,16 +670,20 @@ public class DragLinearLayout extends LinearLayout {
             }
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP: {
-                onTouchEnded();
+                onTouchEnd();
 
-                if (draggedItem.dragging) stopDrag(); // TODO test whether check necessary
+                if (draggedItem.dragging) {
+                    onDragStop();
+                } else if (draggedItem.detecting) {
+                    draggedItem.stopDetecting();
+                }
                 return true;
             }
         }
         return false;
     }
 
-    private void onTouchEnded() {
+    private void onTouchEnd() {
         downY = -1;
         activePointerId = INVALID_POINTER_ID;
     }
