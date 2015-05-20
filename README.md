@@ -19,7 +19,7 @@ Usage
 Add it to your project using Gradle:
 
 ```groovy
-compile 'com.jmedeisis:draglinearlayout:1.0.1'
+compile 'com.jmedeisis:draglinearlayout:1.1.0'
 ```
 
 The `DragLinearLayout` can be used in place of any `LinearLayout`. However, by default, children
@@ -105,10 +105,6 @@ and more.
 Limitations
 -----------
 - Supports only the `LinearLayout#VERTICAL` orientation.
-- Works for API levels 7+ with a dependency on [NineOldAndroids](http://nineoldandroids.com/).
-For API levels 11+, the dependency could be removed by replacing all
-`com.nineoldandroids.animation.*` imports with their identically named `android.animation.*`
-counterparts.
 
 License
 -------
