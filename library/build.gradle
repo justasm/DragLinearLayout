@@ -9,7 +9,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
-        versionName "1.1.0-dev"
+        versionName "1.1.0"
     }
     buildTypes {
         release {
@@ -33,12 +33,12 @@ buildscript {
     }
 }
 
+// https://github.com/novoda/bintray-release/wiki/Configuration-of-the-publish-closure
 publish {
-    // https://github.com/novoda/bintray-release/wiki/Configuration-of-the-publish-closure
     userOrg = 'justasm'
     groupId = 'com.jmedeisis'
     artifactId = 'draglinearlayout'
-    version = "1.0.1"
+    version = "1.1.0"
     licences = ['MIT']
     description = "Android LinearLayout with drag and drop to reorder."
     website = 'https://github.com/justasm/DragLinearLayout'
