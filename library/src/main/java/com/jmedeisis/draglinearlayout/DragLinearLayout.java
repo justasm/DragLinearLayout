@@ -360,7 +360,7 @@ public class DragLinearLayout extends LinearLayout {
 
     private void startDrag() {
         // remove layout transition, it conflicts with drag animation
-        // we will restore it after drag animation end, see stopDrag()
+        // we will restore it after drag animation end, see onDragStop()
         layoutTransition = getLayoutTransition();
         if (layoutTransition != null) {
             setLayoutTransition(null);
