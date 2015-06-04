@@ -61,6 +61,8 @@ public class DragLinearLayout extends LinearLayout {
 
     private OnViewSwapListener swapListener;
 
+    private LayoutTransition layoutTransition;
+
     /**
      * Mapping from child index to drag-related info container.
      * Presence of mapping implies the child can be dragged, and is considered for swaps with the
@@ -351,6 +353,13 @@ public class DragLinearLayout extends LinearLayout {
     }
 
     private void startDrag() {
+        // remove layout transition, it conflicts with drag animation
+        // we will restore it after drag animation end, see stopDrag()
+        layoutTransition = getLayoutTransition();
+        if (layoutTransition != null) {
+            setLayoutTransition(null);
+        }
+
         draggedItem.onDragStart();
         requestDisallowInterceptTouchEvent(true);
     }
@@ -392,6 +401,11 @@ public class DragLinearLayout extends LinearLayout {
 
                 if (null != dragTopShadowDrawable) dragTopShadowDrawable.setAlpha(255);
                 dragBottomShadowDrawable.setAlpha(255);
+
+                // restore layout transition
+                if (layoutTransition != null && getLayoutTransition() == null) {
+                    setLayoutTransition(layoutTransition);
+                }
             }
         });
         draggedItem.settleAnimation.start();
