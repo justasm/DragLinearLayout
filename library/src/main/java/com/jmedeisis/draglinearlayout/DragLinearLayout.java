@@ -296,6 +296,12 @@ public class DragLinearLayout extends LinearLayout {
         }
     }
 
+    @Override
+    public void removeAllViews() {
+        super.removeAllViews();
+        draggableChildren.clear();
+    }
+
     /**
      * If this layout is within a {@link android.widget.ScrollView}, register it here so that it
      * can be scrolled during item drags.
