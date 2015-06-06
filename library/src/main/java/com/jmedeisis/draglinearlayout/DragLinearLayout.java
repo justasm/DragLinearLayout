@@ -264,6 +264,11 @@ public class DragLinearLayout extends LinearLayout {
      * Makes the child a candidate for dragging. Must be an existing child of this layout.
      */
     public void setViewDraggable(View child, View dragHandle) {
+        if (null == child || null == dragHandle) {
+            throw new IllegalArgumentException(
+                "Draggable children and their drag handles must not be null.");
+        }
+        
         if (this == child.getParent()) {
             dragHandle.setOnTouchListener(new DragHandleOnTouchListener(child));
             draggableChildren.put(indexOfChild(child), new DraggableChild());
