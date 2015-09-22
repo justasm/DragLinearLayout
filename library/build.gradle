@@ -29,7 +29,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.novoda:bintray-release:0.2.10'
+        classpath 'com.novoda:bintray-release:0.3.4'
     }
 }
 
