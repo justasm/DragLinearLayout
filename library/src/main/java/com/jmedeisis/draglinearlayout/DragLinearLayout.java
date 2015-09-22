@@ -61,6 +61,8 @@ public class DragLinearLayout extends LinearLayout {
 
     private OnViewSwapListener swapListener;
 
+    private LayoutTransition layoutTransition;
+
     /**
      * Mapping from child index to drag-related info container.
      * Presence of mapping implies the child can be dragged, and is considered for swaps with the
@@ -262,6 +264,11 @@ public class DragLinearLayout extends LinearLayout {
      * Makes the child a candidate for dragging. Must be an existing child of this layout.
      */
     public void setViewDraggable(View child, View dragHandle) {
+        if (null == child || null == dragHandle) {
+            throw new IllegalArgumentException(
+                "Draggable children and their drag handles must not be null.");
+        }
+        
         if (this == child.getParent()) {
             dragHandle.setOnTouchListener(new DragHandleOnTouchListener(child));
             draggableChildren.put(indexOfChild(child), new DraggableChild());
@@ -294,6 +301,12 @@ public class DragLinearLayout extends LinearLayout {
                 }
             }
         }
+    }
+
+    @Override
+    public void removeAllViews() {
+        super.removeAllViews();
+        draggableChildren.clear();
     }
 
     /**
@@ -351,6 +364,13 @@ public class DragLinearLayout extends LinearLayout {
     }
 
     private void startDrag() {
+        // remove layout transition, it conflicts with drag animation
+        // we will restore it after drag animation end, see onDragStop()
+        layoutTransition = getLayoutTransition();
+        if (layoutTransition != null) {
+            setLayoutTransition(null);
+        }
+
         draggedItem.onDragStart();
         requestDisallowInterceptTouchEvent(true);
     }
@@ -392,6 +412,11 @@ public class DragLinearLayout extends LinearLayout {
 
                 if (null != dragTopShadowDrawable) dragTopShadowDrawable.setAlpha(255);
                 dragBottomShadowDrawable.setAlpha(255);
+
+                // restore layout transition
+                if (layoutTransition != null && getLayoutTransition() == null) {
+                    setLayoutTransition(layoutTransition);
+                }
             }
         });
         draggedItem.settleAnimation.start();
