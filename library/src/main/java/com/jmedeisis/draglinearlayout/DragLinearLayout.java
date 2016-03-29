@@ -362,6 +362,9 @@ public class DragLinearLayout extends LinearLayout {
         draggableChildren.get(position).endExistingAnimation();
 
         draggedItem.startDetectingOnPossibleDrag(child, position);
+        if (containerScrollView != null) {
+            containerScrollView.requestDisallowInterceptTouchEvent(true);
+        }
     }
 
     private void startDrag() {
